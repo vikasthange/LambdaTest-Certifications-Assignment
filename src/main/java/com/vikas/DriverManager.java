@@ -1,23 +1,62 @@
 package com.vikas;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class DriverManager {
     private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    public WebDriver driver(){
+    public static WebDriver driver(){
         return driver.get();
     }
-    public void setDriver(WebDriver driver){
+    public static void setDriver(WebDriver driver){
         DriverManager.driver.set(driver);
     }
-    public void initDriver(String url, String ltUserName, String ltToken, Map<String,String> caps){
+    public static void initDriver(DesiredCapabilities capabilities){
 
+        
+        try {
+            driver.set(new RemoteWebDriver(new URL(Const.LT_GRID_URL), capabilities));
+        } catch (MalformedURLException e) {
+            System.err.println("Failed to launch Browser, Error: "+e.getClass().getName()+" - "+e.getMessage()+", Cause: "+ e.getCause().getClass().getName()+" - "+e.getCause().getMessage());
+            e.printStackTrace();
+        }
+        
+        // Question: TimeOut of the test duration should be set to 20 seconds (for both the test scenarios). Parallelism should be at the Class Level (i.e., both the tests should be executing in parallel on LambdaTest).
+    }
+    public static void initDriver(String browserName, String browserVersion, String osName, String testName) {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("browserName", browserName);
+        capabilities.setCapability("browserVersion", browserVersion);
+
+        HashMap<String, Object> ltOptions = new HashMap<String, Object>();
+        ltOptions.put("user", Const.getLtUsername());
+        ltOptions.put("accessKey", Const.getLtToken());
+        ltOptions.put("build", "Selenium 4");
+
+        ltOptions.put("name", testName);
+        ltOptions.put("platformName", osName);
+
+        ltOptions.put("seCdp", true);
+        ltOptions.put("selenium_version", "4.0.0");
         // Question: Ensure that network logs, video recording, screenshots, & console
         // logs are enabled through the desired capabilities generator.
+        ltOptions.put("visual", true);
+        ltOptions.put("video", true);
+        ltOptions.put("network", true);
+        ltOptions.put("project", "Vikas Thange - Certification");
+        ltOptions.put("tunnel", true);
+        ltOptions.put("console", "info");
+        ltOptions.put("w3c", true);
 
-        // Question: TimeOut of the test duration should be set to 20 seconds (for both the test scenarios). Parallelism should be at the Class Level (i.e., both the tests should be executing in parallel on LambdaTest).
+        capabilities.setCapability("LT:Options", ltOptions);
+        
+        initDriver(capabilities);
     }
 }

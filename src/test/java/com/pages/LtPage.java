@@ -17,6 +17,15 @@ public class LtPage {
         // Question: Perform an explicit wait till the time all the elements in the DOM are available.
         //TODO:
     }
+    public void openUrl(String url){
+        this.driver.get(url);
+    }
+    public String getTitle(){
+        return driver.getTitle();
+    }
+    public String getUrl(){
+        return driver.getCurrentUrl();
+    }
     //Scroll to the WebElement ‘SEE ALL INTEGRATIONS’ using the scrollIntoView() method. You are free to use any of the available web locators (e.g., XPath, CssSelector, etc.)
     public void scrollToSeeAllIntegrations(){
         //TODO:
@@ -32,6 +41,6 @@ public class LtPage {
      * @return all  open window handles
      */
     public List<String> getAllWindowHandles(){
-        return new ArrayList(this.driver.getWindowHandles());
+        return new ArrayList<String>(this.driver.getWindowHandles());
     }
 }

@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.vikas.DriverManager;
+
 public class AssignmentTest{
     // Question: Keep it simple
     // TimeOut of the test duration should be set to 20 seconds (for both the test scenarios). 
@@ -11,6 +13,8 @@ public class AssignmentTest{
     public void test1(String browserName,String browserVersion,String osName){
         
         Assert.assertTrue(true);
+        DriverManager.initDriver(browserName,browserVersion,osName);
+        
         //Navigate to https://www.lambdatest.com/.
         //Perform an explicit wait till the time all the elements in the DOMare available.
         // Click -> All integrations & navigate to new page

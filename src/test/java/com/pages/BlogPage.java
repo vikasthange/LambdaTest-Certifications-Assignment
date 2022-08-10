@@ -2,9 +2,9 @@ package com.pages;
 
 import org.openqa.selenium.WebDriver;
 
-public class integrationPage  extends LtPage{
+public class BlogPage extends LtPage{
 
-    integrationPage(WebDriver driver) {
+    BlogPage(WebDriver driver) {
         super(driver);
         //TODO Auto-generated constructor stub
     }
