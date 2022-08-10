@@ -1,6 +1,8 @@
 package com.test;
 
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -9,11 +11,16 @@ import com.vikas.DriverManager;
 public class AssignmentTest{
     // Question: Keep it simple
     // TimeOut of the test duration should be set to 20 seconds (for both the test scenarios). 
+    @AfterMethod
+    public void cleanUp(){
+        // Last step to close and quit all sessions
+        DriverManager.cleanUp();
+    }
     @Test(dataProvider = "OS_Browsers_Data_Factory",timeOut = 20000)
-    public void test1(String browserName,String browserVersion,String osName){
+    public void test1(String browserName,String browserVersion,String osName,String testName){
         
         Assert.assertTrue(true);
-        DriverManager.initDriver(browserName,browserVersion,osName);
+        DriverManager.initDriver(browserName,browserVersion,osName,testName);
         
         //Navigate to https://www.lambdatest.com/.
         //Perform an explicit wait till the time all the elements in the DOMare available.
@@ -41,8 +48,8 @@ public class AssignmentTest{
 
         
         return new Object[][]{
-            {"Chrome","86.0","Windows 10"},
-            {"Microsoft Edge","87.0","macOS Sierra"},
+            {"Chrome","86.0","Windows 10","Test 1: LT integration Page with chrome browser on Windows 10"},
+            {"Microsoft Edge","87.0","macOS Sierra","Test 2: LT integration Page with MS Edge browser on MacOS Sierra"}
         }; 
     }
 
