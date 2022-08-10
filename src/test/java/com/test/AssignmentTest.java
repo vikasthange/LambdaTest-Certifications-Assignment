@@ -61,7 +61,7 @@ public class AssignmentTest{
     private LtPage openHomePage() {
         System.out.println("Opening Url: "+Const.APP_HOME_URL);
         DriverManager.driver().get(Const.APP_HOME_URL);
-        return (LtPage)PageFactory.initElements(DriverManager.driver(), LtPage.class);
+        return PageFactory.initElements(DriverManager.driver(), LtPage.class);
     }
     
     // Question: You must run the test on LambdaTest Cloud Selenium Grid in parallel and mention the final Test ID(s) while submitting.

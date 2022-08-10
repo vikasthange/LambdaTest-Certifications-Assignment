@@ -17,16 +17,17 @@ public class LtPage {
 
     //Question: Please ensure to use at least 3 different locators while performing the test.
 
-    By linkSeeAllIntegrations = By.linkText("See All Integrations");
+    By linkSeeAllIntegrations = By.xpath("//*[text()='See All Integrations']");
+    By logo= By.cssSelector(".tools_logo img");
     protected WebDriver driver;
-    LtPage(WebDriver driver){
+    public LtPage(WebDriver driver){
         this.driver=driver;
     }
     public void waitForPageToLoad(){
         // Question: Perform an explicit wait till the time all the elements in the DOM are available.
         //TODO:
         waitForSeconds(1);
-        new WebDriverWait(driver, Duration.ofSeconds(Const.ELEMENT_TIMEOUT_SEC)).until(ExpectedConditions.presenceOfAllElementsLocatedBy(linkSeeAllIntegrations));
+        new WebDriverWait(driver, Duration.ofSeconds(Const.ELEMENT_TIMEOUT_SEC)).until(ExpectedConditions.visibilityOfElementLocated(logo));
     }
     private void waitForSeconds(int sec) {
         try {
@@ -49,11 +50,15 @@ public class LtPage {
     public void scrollToSeeAllIntegrations(){
         WebElement element= driver.findElement(linkSeeAllIntegrations);
         JavascriptExecutor executor = (JavascriptExecutor) driver;
-        executor.executeScript("arguments[0].scrollintoView()", element);
+        executor.executeScript("arguments[0].scrollIntoView()", element);
     }
     //Click on the link and ensure that it opens in a new Tab.
     public void clickToSeeAllIntegrations(){
-        driver.findElement(linkSeeAllIntegrations).click();       
+       // driver.findElement(linkSeeAllIntegrations).click();       
+       // Using javascript click as there might be a popu hiding link
+       WebElement element= driver.findElement(linkSeeAllIntegrations);
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].click()", element);
     }
     // 5. Save the window handles in a List (or array). Print the window handles of the opened windows (now there are two windows open).
     /**
