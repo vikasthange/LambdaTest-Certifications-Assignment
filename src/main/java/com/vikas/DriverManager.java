@@ -34,6 +34,7 @@ public class DriverManager {
             catch(WebDriverException e){
                 System.err.println("Failed to launch browser, Please refer below error stack");
                 e.printStackTrace();
+                throw e;
             }
         } catch (MalformedURLException e) {
             System.err.println("Failed to launch Browser, Error: "+e.getClass().getName()+" - "+e.getMessage()+", Cause: "+ e.getCause().getClass().getName()+" - "+e.getCause().getMessage());
@@ -73,7 +74,7 @@ public class DriverManager {
         ltOptions.put("visual", true);
         ltOptions.put("video", true);
         ltOptions.put("network", true);
-        ltOptions.put("project", "Vikas Thange - Certification");
+        ltOptions.put("project", "Certification");
         ltOptions.put("console", "info");
         ltOptions.put("w3c", true);
 
