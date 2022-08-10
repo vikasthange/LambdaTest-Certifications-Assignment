@@ -36,3 +36,8 @@ target/surefire-reports/old/com.test.AssignmentTest/testng.xml.html
 target/surefire-reports/old/com.test.AssignmentTest/toc.html
 target/test-classes/com/test/AssignmentTest.class
 .vscode/settings.json
+.idea/LambdaTest-Certifications-Assignment.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
