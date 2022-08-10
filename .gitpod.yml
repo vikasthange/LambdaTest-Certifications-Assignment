@@ -1,2 +1,2 @@
 tasks:
-- command: mvn clean test
+- command: mvn clean test -DltUser=vikasthange -DltToken=Fcu6S1cOO6sOY16ca9n9gxmbke3ade5SXdKLOklA983vD30MLt
