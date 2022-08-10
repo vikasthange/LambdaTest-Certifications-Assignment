@@ -6,6 +6,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.vikas.Const;
 import com.vikas.DriverManager;
 
 public class AssignmentTest{
@@ -16,7 +17,7 @@ public class AssignmentTest{
         // Last step to close and quit all sessions
         DriverManager.cleanUp();
     }
-    @Test(dataProvider = "OS_Browsers_Data_Factory",timeOut = 20000)
+    @Test(dataProvider = "OS_Browsers_Data_Factory",timeOut = Const.TIMEOUT)
     public void test1(String browserName,String browserVersion,String osName,String testName){
         
         Assert.assertTrue(true);

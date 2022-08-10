@@ -4,6 +4,7 @@ public class Const {
     public static String LT_GRID_URL="https://hub.lambdatest.com/wd/hub";
     public static String LT_UNAME_KEY="ltUser";
     public static String LT_TOKEN_KEY="ltToken";
+    public final static int TIMEOUT=90000;
 
     public static Object getLtUsername() {
         if(System.getProperty(LT_UNAME_KEY)!=null){

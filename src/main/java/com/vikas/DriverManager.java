@@ -3,7 +3,7 @@ package com.vikas;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Map;
+
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -61,13 +61,13 @@ public class DriverManager {
         HashMap<String, Object> ltOptions = new HashMap<String, Object>();
         ltOptions.put("user", Const.getLtUsername());
         ltOptions.put("accessKey", Const.getLtToken());
-        ltOptions.put("build", "Selenium 4");
+        ltOptions.put("build", "Vikas Thange - Certification");
 
         ltOptions.put("name", testName);
         ltOptions.put("platformName", osName);
 
         // ltOptions.put("seCdp", true);
-        ltOptions.put("selenium_version", "4.0.0");
+        ltOptions.put("selenium_version", "4.0.0"); // Vikas: 4.4.0 not supported right now from lambdatest
         // Question: Ensure that network logs, video recording, screenshots, & console
         // logs are enabled through the desired capabilities generator.
         ltOptions.put("visual", true);
