@@ -20,7 +20,7 @@ public class IntegrationPage  extends LtPage{
         this.scrollTo(divCodelessRow);
     }
     public void clickTestingWhizLearnMore(){
-        divCodelessRow.click();
+        linkTestingWhizLearnMore.click();
     }
     
     

@@ -40,11 +40,15 @@ public class AssignmentTest{
         Logger.log( "Scrolling to all integrations sections ");
         ltHomePage.scrollToIntegrationsModuleSection();
         Logger.log( "Clicking all integrations link");
+
+/* Defect#1: clicking on  "all integrations link" does not open new page in new tab/window */
         ltHomePage.clickToSeeAllIntegrations();
+
         //Print the window handles of the opened windows
         Logger.log( "Reading all window handles");
         List<String> handles = ltHomePage.getAllWindowHandles();
-        Logger.log( "Currently opened window: "+handles.size()+", Handles :"+handles);
+        // Vikas: Question only tells to print the count and not to assert count, If assert added then test will fails as mentioned Defect#1.
+        Logger.log( "Currently opened window: "+handles.size()+", Handles :"+handles);  
         // Switch to newly open window
         Logger.log( "Switching to new window");
         ltHomePage.switchToWindowByHandleId(handles.get(handles.size()-1));
@@ -56,10 +60,14 @@ public class AssignmentTest{
         integrationsPage.scrollToCodelessRow();
         //Click the ‘LEARN MORE’ link for Testing Whiz. The page should open in the same window.
         integrationsPage.clickTestingWhizLearnMore();
+
+/* Defect#2:   expected page time mentioned in question is different that  actual title, below assert is failing */
         //Check if the title of the page is ‘TestingWhiz Integration | LambdaTest’. If not, raise an Assert.
         Assert.assertEquals(integrationsPage.getTitle(), "TestingWhiz Integration | LambdaTest","Page title failed after opening testing whiz learn more");
+/* Defect#1: clicking on  "all integrations link" does not open new page in new tab/window  so if current window closed then following code will fais as there is only one window*/
         //Close the current window using the window handle [which we obtained in step (5)]
         integrationsPage.closeCurrnetWindow();
+        
         integrationsPage.switchToWindowByHandleId(handles.get(0));
         //Print the current window count.
         Logger.log("Currently opened windows: "+ integrationsPage.getAllWindowHandles().size());
@@ -97,6 +105,4 @@ public class AssignmentTest{
            {"Microsoft Edge","87.0","macOS Sierra","Test 2: LT integration Page with MS Edge browser on MacOS Sierra","TC2"}
         }; 
     }
-
-
 }

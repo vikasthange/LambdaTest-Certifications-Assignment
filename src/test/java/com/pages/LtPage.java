@@ -66,16 +66,14 @@ public class LtPage {
     }
     //Scroll to the WebElement ‘SEE ALL INTEGRATIONS’ using the scrollIntoView() method. You are free to use any of the available web locators (e.g., XPath, CssSelector, etc.)
     public void scrollToIntegrationsModuleSection(){
-        WebElement element= driver.findElement(sectionSeemlessCollabration);
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
-        executor.executeScript("arguments[0].scrollIntoView()", element);
+        scrollTo(sectionSeemlessCollabration);
     }
     //Click on the link and ensure that it opens in a new Tab.
     public void clickToSeeAllIntegrations(){
     //    driver.findElement(linkSeeAllIntegrations).click();       
        // Using javascript click as there is allow cookie popup 
        
-       scrollTo(linkSeeAllIntegrations);
+       jsClick(linkSeeAllIntegrations);
     }
     // 5. Save the window handles in a List (or array). Print the window handles of the opened windows (now there are two windows open).
     /**
@@ -90,15 +88,20 @@ public class LtPage {
     public void closeCurrnetWindow() {
         this.driver.close();
     }
-    protected void scrollTo(WebElement divCodelessRow2) {
-        WebElement element= driver.findElement(linkSeeAllIntegrations);
+    
+    protected void jsClick(By locator) {
+        WebElement element= driver.findElement(locator);
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         executor.executeScript("arguments[0].click()", element);
+    }
+    protected void scrollTo(WebElement element) {
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].scrollIntoView()", element);
     }
     protected void scrollTo(By locator) {
         WebElement element= driver.findElement(locator);
         JavascriptExecutor executor = (JavascriptExecutor) driver;
-        executor.executeScript("arguments[0].click()", element);
+        executor.executeScript("arguments[0].scrollIntoView()", element);
     }
     
 }
