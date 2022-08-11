@@ -7,7 +7,7 @@ Simply Execute below command </br>
 ltUser - Lambdatest username </br>
 ltToken - LambdaTest token to run test </br>
 
-If no paramaters passed then credentials will be taken from Const.java file
+If no paramaters passed then credentials will be taken from Const.java file </br>
 you can simpley run command `mvn clean test` to use default credentials from Const.java file
 
 Assumptions: </br>
