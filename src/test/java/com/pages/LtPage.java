@@ -7,6 +7,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,7 +19,9 @@ public class LtPage {
     //Question: Please ensure to use at least 3 different locators while performing the test.
 
     By linkSeeAllIntegrations = By.xpath("//*[text()='See All Integrations']");
-    By logo= By.cssSelector(".tools_logo img");
+    By btnAllowCookie = By.xpath("//*[contains(@class,'cookies__bar')]//span[.='Allow Cookie']");
+    By sectionSeemlessCollabration = By.xpath("//*[text()='Seamless Collaboration']");
+    By logo = By.cssSelector(".tools_logo img");
     protected WebDriver driver;
     public LtPage(WebDriver driver){
         this.driver=driver;
@@ -27,7 +30,22 @@ public class LtPage {
         // Question: Perform an explicit wait till the time all the elements in the DOM are available.
         //TODO:
         waitForSeconds(1);
-        new WebDriverWait(driver, Duration.ofSeconds(Const.ELEMENT_TIMEOUT_SEC)).until(ExpectedConditions.visibilityOfElementLocated(logo));
+        WebDriverWait wait =  new WebDriverWait(driver, Duration.ofSeconds(Const.ELEMENT_TIMEOUT_SEC));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(logo));
+        //close allow cookie popup
+        if(isElementPresent(btnAllowCookie)){
+            
+            driver.findElement(btnAllowCookie).click();
+        }
+        
+    }
+    private boolean isElementPresent(By btnAllowCookie2) {
+        try{
+            return driver.findElement(btnAllowCookie)!=null;
+        }
+        catch(WebDriverException e){
+            return false;
+        }
     }
     private void waitForSeconds(int sec) {
         try {
@@ -47,18 +65,17 @@ public class LtPage {
         return driver.getCurrentUrl();
     }
     //Scroll to the WebElement ‘SEE ALL INTEGRATIONS’ using the scrollIntoView() method. You are free to use any of the available web locators (e.g., XPath, CssSelector, etc.)
-    public void scrollToSeeAllIntegrations(){
-        WebElement element= driver.findElement(linkSeeAllIntegrations);
+    public void scrollToIntegrationsModuleSection(){
+        WebElement element= driver.findElement(sectionSeemlessCollabration);
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         executor.executeScript("arguments[0].scrollIntoView()", element);
     }
     //Click on the link and ensure that it opens in a new Tab.
     public void clickToSeeAllIntegrations(){
-       // driver.findElement(linkSeeAllIntegrations).click();       
-       // Using javascript click as there might be a popu hiding link
-       WebElement element= driver.findElement(linkSeeAllIntegrations);
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
-        executor.executeScript("arguments[0].click()", element);
+    //    driver.findElement(linkSeeAllIntegrations).click();       
+       // Using javascript click as there is allow cookie popup 
+       
+       scrollTo(linkSeeAllIntegrations);
     }
     // 5. Save the window handles in a List (or array). Print the window handles of the opened windows (now there are two windows open).
     /**
@@ -67,6 +84,21 @@ public class LtPage {
     public List<String> getAllWindowHandles(){
         return new ArrayList<String>(this.driver.getWindowHandles());
     }
-    public void switchToRecentlyOpenedWindow() {
+    public void switchToWindowByHandleId(String handleId) {
+        this.driver.switchTo().window(handleId);
     }
+    public void closeCurrnetWindow() {
+        this.driver.close();
+    }
+    protected void scrollTo(WebElement divCodelessRow2) {
+        WebElement element= driver.findElement(linkSeeAllIntegrations);
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].click()", element);
+    }
+    protected void scrollTo(By locator) {
+        WebElement element= driver.findElement(locator);
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].click()", element);
+    }
+    
 }

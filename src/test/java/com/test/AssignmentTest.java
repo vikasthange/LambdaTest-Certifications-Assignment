@@ -8,10 +8,13 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.pages.BlogPage;
+import com.pages.CommunityPage;
 import com.pages.IntegrationPage;
 import com.pages.LtPage;
 import com.vikas.Const;
 import com.vikas.DriverManager;
+import com.vikas.Logger;
 
 public class AssignmentTest{
     // Question: Keep it simple
@@ -22,44 +25,60 @@ public class AssignmentTest{
         DriverManager.cleanUp();
     }
     @Test(dataProvider = "OS_Browsers_Data_Factory",timeOut = Const.TIMEOUT)
-    public void test1(String browserName,String browserVersion,String osName,String testName){
+    public void test1(String browserName,String browserVersion,String osName,String testName,String testId){
         
         Assert.assertTrue(true);
-        DriverManager.initDriver(browserName,browserVersion,osName,testName);
+        DriverManager.initDriver(browserName,browserVersion,osName,testName,testId);
         
         LtPage ltHomePage = openHomePage();
         //Navigate to https://www.lambdatest.com/.
         //Perform an explicit wait till the time all the elements in the DOMare available.
-        System.out.println("Waiting for page to load..");
+        Logger.log("Waiting for page to load..");
         ltHomePage.waitForPageToLoad();
         // Scroll and Click -> All integrations & navigate to new page
-        System.out.println("Scrolling to all integrations link");
-        ltHomePage.scrollToSeeAllIntegrations();
-        System.out.println("Clicking all integrations link");
+        //Integrations module will be on screen and will be captured in screenshot
+        Logger.log( "Scrolling to all integrations sections ");
+        ltHomePage.scrollToIntegrationsModuleSection();
+        Logger.log( "Clicking all integrations link");
         ltHomePage.clickToSeeAllIntegrations();
         //Print the window handles of the opened windows
-        System.out.println("Reading all window handles");
-        List<String> handles =ltHomePage.getAllWindowHandles();
-        System.out.println("Currently opened window: "+handles.size()+", Handles :"+handles);
+        Logger.log( "Reading all window handles");
+        List<String> handles = ltHomePage.getAllWindowHandles();
+        Logger.log( "Currently opened window: "+handles.size()+", Handles :"+handles);
         // Switch to newly open window
-        System.out.println("Switching to new window");
-        ltHomePage.switchToRecentlyOpenedWindow();
+        Logger.log( "Switching to new window");
+        ltHomePage.switchToWindowByHandleId(handles.get(handles.size()-1));
         //Verify whether the URL is the same as the expected URL (if not, throw an Assert).
         IntegrationPage integrationsPage = PageFactory.initElements(DriverManager.driver(), IntegrationPage.class);
-        System.out.println("Asseting url, expected: https://www.lambdatest.com/integrations");
-        Assert.assertEquals(integrationsPage.getUrl(), "https://www.lambdatest.com/integrations","Invalid url for Integrations page");
+        Logger.log( "Asseting url, expected: https://www.lambdatest.com/integrations");
+        Assert.assertEquals(integrationsPage.getUrl(), "https://www.lambdatest.com/integrations", "Invalid url for Integrations page");
         //On that page, scroll to the page where the WebElement(Codeless Automation) is present.
+        integrationsPage.scrollToCodelessRow();
         //Click the ‘LEARN MORE’ link for Testing Whiz. The page should open in the same window.
+        integrationsPage.clickTestingWhizLearnMore();
         //Check if the title of the page is ‘TestingWhiz Integration | LambdaTest’. If not, raise an Assert.
+        Assert.assertEquals(integrationsPage.getTitle(), "TestingWhiz Integration | LambdaTest","Page title failed after opening testing whiz learn more");
         //Close the current window using the window handle [which we obtained in step (5)]
+        integrationsPage.closeCurrnetWindow();
+        integrationsPage.switchToWindowByHandleId(handles.get(0));
         //Print the current window count.
+        Logger.log("Currently opened windows: "+ integrationsPage.getAllWindowHandles().size());
         //On the current window, set the URL to https: //www.lambdatest.com/blog.
+        BlogPage blogpage = navigateToBlogPage();
         //Click on the ‘Community’ link and verify whether the URL is
-        //14. Close the current browser window. https: //community.lambdatest.com/.
+        CommunityPage communityPage = blogpage.clickCommunityLink();
+        //14. Close the current browser window. https://community.lambdatest.com/.
+        Assert.assertEquals(communityPage.getUrl(), "https://community.lambdatest.com/");
 
     }
+    private BlogPage navigateToBlogPage() {
+    
+        Logger.log("Opening Url: "+Const.BLOG_PAGE_URL);
+        DriverManager.driver().navigate().to(Const.BLOG_PAGE_URL);
+        return PageFactory.initElements(DriverManager.driver(), BlogPage.class);
+    }
     private LtPage openHomePage() {
-        System.out.println("Opening Url: "+Const.APP_HOME_URL);
+        Logger.log("Opening Url: "+Const.APP_HOME_URL);
         DriverManager.driver().get(Const.APP_HOME_URL);
         return PageFactory.initElements(DriverManager.driver(), LtPage.class);
     }
@@ -74,8 +93,8 @@ public class AssignmentTest{
 
         
         return new Object[][]{
-            {"Chrome","86.0","Windows 10","Test 1: LT integration Page with chrome browser on Windows 10"},
-           // {"Microsoft Edge","87.0","macOS Sierra","Test 2: LT integration Page with MS Edge browser on MacOS Sierra"}
+           {"Chrome","86.0","Windows 10","Test 1: LT integration Page with chrome browser on Windows 10","TC1"},
+           {"Microsoft Edge","87.0","macOS Sierra","Test 2: LT integration Page with MS Edge browser on MacOS Sierra","TC2"}
         }; 
     }
 

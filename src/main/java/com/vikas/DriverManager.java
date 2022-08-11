@@ -11,8 +11,14 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class DriverManager {
-    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-
+    private static ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
+    private static ThreadLocal<String> testName = new ThreadLocal<String>();
+    public static void setTestName(String name){
+        testName.set(name);
+    }
+    public static String getTestName(){
+        return (testName.get()==null?" - ":testName.get());
+    }
     public static WebDriver driver(){
         return driver.get();
     }
@@ -20,24 +26,22 @@ public class DriverManager {
         DriverManager.driver.set(driver);
     }
     public static void initDriver(DesiredCapabilities capabilities){
-
-        
         try {
-            System.out.println("Starting browser....");
+            Logger.log("Starting browser....");
             try{
-                System.out.println("Hub Url: "+ Const.LT_GRID_URL);
-                System.out.println("Capabilities: "+capabilities);
+                Logger.log("Hub Url: "+ Const.LT_GRID_URL);
+                Logger.log("Capabilities: "+capabilities);
                 
                 driver.set(new RemoteWebDriver(new URL(Const.LT_GRID_URL), capabilities));
-                System.out.println("Browser started....");
+                Logger.log( "Browser started....");
             }
             catch(WebDriverException e){
-                System.err.println("Failed to launch browser, Please refer below error stack");
+                Logger.log("Failed to launch browser, Please refer below error stack");
                 e.printStackTrace();
                 throw e;
             }
         } catch (MalformedURLException e) {
-            System.err.println("Failed to launch Browser, Error: "+e.getClass().getName()+" - "+e.getMessage()+", Cause: "+ e.getCause().getClass().getName()+" - "+e.getCause().getMessage());
+            Logger.err("Failed to launch Browser, Error: "+e.getClass().getName()+" - "+e.getMessage()+", Cause: "+ e.getCause().getClass().getName()+" - "+e.getCause().getMessage());
             e.printStackTrace();
         }
         
@@ -51,10 +55,11 @@ public class DriverManager {
             driver.get().quit();
         }
         catch(Exception e){
-            System.out.println("Already closed?..");
+            Logger.warn( "Already closed?..");
         }
     }
-    public static void initDriver(String browserName, String browserVersion, String osName, String testName) {
+    public static void initDriver(String browserName, String browserVersion, String osName, String testName,String testId) {
+        setTestName(testId);
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("browserName", browserName);
         capabilities.setCapability("browserVersion", browserVersion);

@@ -48,7 +48,7 @@ public class Const {
             return Const.LT_TOKEN_DEFAULT;
         }
         else{
-            System.err.println("Need LT credentials, Please set "+LT_TOKEN_KEY+" key");
+            Logger.err("Need LT credentials, Please set "+LT_TOKEN_KEY+" key");
             throw new RuntimeException("Need LT credentials, Please set "+LT_TOKEN_KEY+" key");
         }
     }
